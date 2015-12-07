@@ -22,9 +22,18 @@ After this lesson, you should be able to:
 
 # Context: Databases and Data Validity
 
+What is a "validation"?
+
+In the context of Rails, validations are special method calls that go at the
+top of model class definitions and prevent them from being saved to the
+database if their data doesn't look right.
+
+In general, "validations" are any code that perform the job of protecting
+the database from invalid code.
+
 ## AR Validations Are Not Database Validations
 
-Many relational databases such as PostgreSQL have data validation features that
+Many relational databases such as SQLite have data validation features that
 check things like length and data type. In Rails, these validations are **not
 used**, because each database works a little differently, and handling
 everything in ActiveRecord itself guarantees that we'll always get the same
@@ -97,8 +106,9 @@ saving it to the database, whereas `#create()` immediately attempts to save it,
 as if you had called `#new()` and then `#save()`.
 
 **Database activity triggers validation**. An ActiveRecord model instantiated
-with `#new()` will *not* be validated, because no attempt to write to the
-database was made.
+with `#new()` will not be validated, because no attempt to write to the
+database was made. Validations won't run unless you call a method that actually
+hits the DB, like `#save()`.
 
 The only way to trigger validation without touching the database is to call the
 `#valid?()` method.
@@ -118,20 +128,37 @@ Here it is, the moment of truth. What can we do when a record fails validation?
 
 **Pay attention to return values!**
 
-By default, ActiveRecord does not raise an exception when validation fails.
-The database operation method will simply return `false` and decline to update
-the database.
+By default, ActiveRecord does not raise an exception when validation fails.  DB
+operation methods (such as `#save()`) will simply return `false` and decline to
+update the database.
 
 Every database method has a sister method with a `!` at the end which will raise
 an exception (`#create!()` instead of `#create()` and so on).
 
 And of course, you can always check manually with `#valid?()`.
 
+```ruby
+class Person < ActiveRecord::Base
+  validates :name, presence: true
+end
+
+p = Person.new
+p.save #=> false
+p.save! #=> EXCEPTION
+```
+
 ## Finding out why validations failed
 
 To find out what went wrong, you can look at the model's `#errors()` object.
 
 You can check all errors at once by examining `errors.messages`.
+
+```ruby
+p = Person.new
+p.errors.messages #=> empty
+p.valid? #=> false
+p.errors.messages #=> name: can't be blank
+```
 
 You can check one attribute at a time by passing the name to `errors` as a key,
 like so:
@@ -170,16 +197,85 @@ This constructs more complete-looking sentences from the more terse messages
 available in `errors.messages`.
 
 
+# Other Builtin Validators
+
+Rails has a host of builtin helpers.
+
+## Length
+
+`length` is one of the most versatile:
+
+```ruby
+class Person < ActiveRecord::Base
+  validates :name, length: { minimum: 2 }
+  validates :bio, length: { maximum: 500 }
+  validates :password, length: { in: 6..20 }
+  validates :registration_number, length: { is: 6 }
+end
+```
+
+The `in` argument makes use of a [Range][ruby-core-range].
+
+[ruby-core-range]: http://ruby-doc.org/core/Range.html
+
+Remember that there's no syntactical magic happening with any of these
+method calls. If we weren't using Ruby's "poetry mode" (which is considered
+standard for Rails), the above code would look like this:
+
+```ruby
+class Person < ActiveRecord::Base
+  validates(:name, { :length => { :minimum => 2 } })
+  validates(:bio, { :length => { :maximum => 500 } })
+  validates(:password, { :length => { :in => 6..20 } })
+  validates(:registration_number, { :length => { :is => 6 } })
+end
+```
+
+Phew!
+
+## Uniqueness
+
+Another common builtin validator is `uniqueness`:
+
+```ruby
+class Account < ActiveRecord::Base
+  validates :email, uniqueness: true
+end
+```
+
+This will prevent any account from being created with the same email as another
+already-existing account.
+
+## Custom Messages
+
+This isn't a validator in its own right, but a handy convenience option for
+specifying your own error messages:
+
+```ruby
+class Person < ActiveRecord::Base
+  validates :not_a_robot, acceptance: true, message: "Humans only!"
+end
+```
+
+
 # Custom Validators
 
 There are three ways to implement custom validators, with examples in [Section
-6][ar_validators_6] of the Rails Guide:
+6][ar_validators_6] of the Rails Guide.
 
-- Subclassing `ActiveModel::Validator` and invoking with `#validates_with()`
+Of the three, `#validate()` is the simplest, because all you need to do is
+define an instance method that is invoked by `#validate()`. This is probably
+the best way to start with most custom validations, because everything is in
+one place, and you can come back later to re-organize if it starts to get more
+complex.
 
-  This approach is best when you want to do a whole bunch of validations on
-  several different models. You can just call `validates_with MyValidator` on
-  each of them.
+- Calling `#validate()` (that's "validate" *without* an "s") with the name of an
+  instance method
+
+  Use this approach when you're not sure which to use. If you end up needing to
+  use the same validation logic on a different model, you can easily extract the
+  instance method into one of the ActiveModel classes and use `#validates()` or
+  `#validates_with()` instead.
 
 - Subclassing `ActiveModel::EachValidator` and invoking with an inflected key in
   the options hash
@@ -190,18 +286,16 @@ There are three ways to implement custom validators, with examples in [Section
   For example, in the Rails Guide, they define `EmailValidator` and then pass
   the `email: true` key-value pair to `#validates()` to invoke it.
 
-- Calling `#validate()` (that's "validate" *without* an "s") with the name of an
-  instance method
+- Subclassing `ActiveModel::Validator` and invoking with `#validates_with()`
 
-  Use this approach when you're not sure which to use. If you end up needing to
-  use the same validation logic on a different model, you can easily extract the
-  instance method into one of the ActiveModel classes and use `#validates()` or
-  `#validates_with()` instead.
+  This approach is best when you want to do a whole bunch of validations on
+  several different models. You can just call `validates_with MyValidator` on
+  each of them.
 
 So, to recap:
 
-- `Validator` and `validates_with` for doing many validations in one pass.
-- `EachValidator` and `validates` for validating one specific attribute.
 - `validate` for quick custom validations that you can extract later.
+- `EachValidator` and `validates` for validating one specific attribute.
+- `Validator` and `validates_with` for doing many validations in one pass.
 
 [ar_validators_6]: http://guides.rubyonrails.org/active_record_validations.html#performing-custom-validations
