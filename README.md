@@ -199,7 +199,7 @@ available in `errors.messages`.
 
 # Other Builtin Validators
 
-Rails has a host of builtin helpers.
+Rails has a host of built in helpers.
 
 ## Length
 
