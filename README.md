@@ -4,8 +4,7 @@ ActiveRecord can validate our models for us before they even touch the
 database. This means it's harder to end up with bad data, which can cause
 problems later even if our code is technically bug-free.
 
-We can use `ActiveRecord::Base` class methods like `#validates` to set things
-up.
+We can use `ActiveRecord::Base` class methods like `#validates` to set things up.
 
 
 # Objectives
@@ -303,3 +302,5 @@ So, to recap:
 [ar_validators_6]: http://guides.rubyonrails.org/active_record_validations.html#performing-custom-validations
 
 <p data-visibility='hidden'>View <a href='https://learn.co/lessons/activerecord-validations-readme' title='ActiveRecord Validations'>ActiveRecord Validations</a> on Learn.co and start learning to code for free.</p>
+
+<p data-visibility='hidden'>View <a href='https://learn.co/lessons/activerecord-validations-readme'>ActiveRecord Validations</a> on Learn.co and start learning to code for free.</p>
