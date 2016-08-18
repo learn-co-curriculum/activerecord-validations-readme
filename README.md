@@ -198,9 +198,9 @@ This constructs more complete-looking sentences from the more terse messages
 available in `errors.messages`.
 
 
-# Other Builtin Validators
+# Other Built-in Validators
 
-Rails has a host of built in helpers.
+Rails has a host of built-in helpers.
 
 ## Length
 
@@ -236,7 +236,7 @@ Phew!
 
 ## Uniqueness
 
-Another common builtin validator is `uniqueness`:
+Another common built-in validator is `uniqueness`:
 
 ```ruby
 class Account < ActiveRecord::Base
@@ -282,7 +282,7 @@ complex.
   the options hash
 
   This is best for validating a single attribute on one model, especially one
-  that you're already using builtin validators for.
+  that you're already using built-in validators for.
 
   For example, in the Rails Guide, they define `EmailValidator` and then pass
   the `email: true` key-value pair to `#validates` to invoke it.
@@ -302,5 +302,3 @@ So, to recap:
 [ar_validators_6]: http://guides.rubyonrails.org/active_record_validations.html#performing-custom-validations
 
 <p data-visibility='hidden'>View <a href='https://learn.co/lessons/activerecord-validations-readme' title='ActiveRecord Validations'>ActiveRecord Validations</a> on Learn.co and start learning to code for free.</p>
-
-<p data-visibility='hidden'>View <a href='https://learn.co/lessons/activerecord-validations-readme'>ActiveRecord Validations</a> on Learn.co and start learning to code for free.</p>
