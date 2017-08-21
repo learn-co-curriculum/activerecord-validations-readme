@@ -240,4 +240,3 @@ So, to recap:
 [ar_validators_6]: http://guides.rubyonrails.org/active_record_validations.html#performing-custom-validations
 
 <p data-visibility='hidden'>View <a href='https://learn.co/lessons/activerecord-validations-readme' title='ActiveRecord Validations'>ActiveRecord Validations</a> on Learn.co and start learning to code for free.</p>
-<p class='util--hide'>View <a href='https://learn.co/lessons/activerecord-validations-readme'>ActiveRecord Validations</a> on Learn.co and start learning to code for free.</p>
