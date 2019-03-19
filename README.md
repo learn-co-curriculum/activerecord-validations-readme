@@ -101,10 +101,10 @@ class Person < ActiveRecord::Base
   validates :name, presence: true
 end
 
-p = Person.new
-p.valid? #=> false
-p.save #=> false
-p.save! #=> EXCEPTION
+person = Person.new
+person.valid? #=> false
+person.save #=> false
+person.save! #=> EXCEPTION
 ```
 
 ## Finding out why validations failed
@@ -114,10 +114,10 @@ To find out what went wrong, you can look at the model's `#errors` object.
 You can check all errors at once by examining `errors.messages`.
 
 ```ruby
-p = Person.new
-p.errors.messages #=> empty
-p.valid? #=> false
-p.errors.messages #=> name: can't be blank
+person = Person.new
+person.errors.messages #=> empty
+person.valid? #=> false
+person.errors.messages #=> name: can't be blank
 ```
 
 You can check one attribute at a time by passing the name to `errors` as a key,
