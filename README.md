@@ -214,29 +214,57 @@ end
 
 # Custom Validators
 
-There are three ways to implement custom validators, with examples in [Section 6][ar_validators_6] of the Rails Guide.
+There are three ways to implement custom validators, with examples in [Section
+6][ar_validators_6] of the Rails Guide.
 
-Of the three, `#validate` is the simplest, because all you need to do is define an instance method that is invoked by `#validate`. This is probably the best way to start with most custom validations, because everything is in one place, and you can come back later to re-organize if it starts to get more complex.
+Of the three, `#validate` is the simplest. If your validation needs become more
+complex, consult the documentation. For _most_ validations, though, the
+following method should be good enough.
 
-- Calling `#validate` (that's "validate" *without* an "s") with the name of an instance method
+1. Create a new directory in `app` called `validators`. Because most Rails
+   developers don't need to write custom validation, this directory is **not**
+   created by default like `models` or `controllers`.
+2. Identify the ActiveRecord attribute you want to validate. Is it the `email`
+   or the `last_name` on the `Person` class, for example?
+3. Create a new file in the `app/validators` directory of the form attribute
+   (from the previous step) + `_validator.rb`. So in the case of validating an
+   attribute called `email`, create a file `app/validators/email_validator.rb`
+4. Inside the new file, define the class. The class name should match the file
+   name of the file, but "Camel-Cased." So `email_validator` should be class
+  `EmailValidator`. The class should inherit from `ActiveModel::Validator`
+5. The validator class must have one instance method, `#validate`. This method
+   will receive one argument typically called `record`.
+6. Inside of `#validate`, you'll be able to get properties from `record` and
+   determine ***whether it is invalid***. If the record is **invalid**, push (`<<`)
+   to `record.errors[:attribute]` e.g. `record.errors[:email]` a `String` which
+   is a message that you want to display that describes why the message is not
+   valid.
+7. Lastly, in the implementation of the class being validated e.g. `Person`,
+   add:
+   1. An `include` of ActiveModel::Validations
+   2. The helper call: `validates_with (className)`. In our example we'd put, `validates_with EmailValidator` (see step 4, above)
 
-  Use this approach when you're not sure which to use. If you end up needing to use the same validation logic on a different model, you   can easily extract the instance method into one of the ActiveModel classes and use `#validates` or `#validates_with` instead.
+The result of these steps should be the following:
 
-- Subclassing `ActiveModel::EachValidator` and invoking with an inflected key in the options hash
+```ruby
+class EmailValidator < ActiveModel::Validator
+  def validate(record)
+    unless record.email.match?(/flatironschool.com/)
+      record.errors[:name] << "We're only allowed to have people who work for the company in the database!"
+    end
+  end
+end
+```
 
-  This is best for validating a single attribute on one model, especially one that you're already using built-in validators for.
+```ruby
+class Person
+  include ActiveModel::Validations
+  validates_with EmailValidator
+end
+```
 
-  For example, in the Rails Guide, they define `EmailValidator` and then pass the `email: true` key-value pair to `#validates` to invoke it.
-
-- Subclassing `ActiveModel::Validator` and invoking with `#validates_with`
-
-  This approach is best when you want to do a whole bunch of validations on several different models. You can just call `validates_with   MyValidator` on each of them.
-
-So, to recap:
-
-- `validate` for quick custom validations that you can extract later.
-- `EachValidator` and `validates` for validating one specific attribute.
-- `Validator` and `validates_with` for doing many validations in one pass.
+Here we validate that all email addresses are in the `flatironschool.com`
+domain.
 
 [ar_validators_6]: http://guides.rubyonrails.org/active_record_validations.html#performing-custom-validations
 
