@@ -217,7 +217,7 @@ end
 There are three ways to implement custom validators, with examples in [Section
 6][ar_validators_6] of the Rails Guide.
 
-Of the three, `#validate` is the simplest. If your validation needs become more
+Of the three, `#validate` is the simplest. If your validation needs to become more
 complex, consult the documentation. For _most_ validations, though, the
 following method should be good enough.
 
