@@ -25,7 +25,7 @@ What is a "validation"?
 
 In the context of Rails, validations are special method calls that go at the top of model class definitions and prevent them from being saved to the database if their data doesn't look right.
 
-In general, "validations" are any code that perform the job of protecting the database from invalid code.
+In general, "validations" are any code that perform the job of protecting the database from invalid data.
 
 ## AR Validations Are Not Database Validations
 
@@ -35,7 +35,8 @@ Many relational databases such as SQLite have data validation features that chec
 
 Suppose you get a new phone and you ask all of your friends for their phone number again. One of them tells you, "555-868-902". If you're paying attention, you'll probably wrinkle your nose and think, "Wait a minute. That doesn't sound like a real phone number."
 
-"555-868-902" is an example of **invalid data**... for a phone number. It's probably a valid account number for some internet service provider in Alaska, but there's no way to figure out what your friend's phone number is from those nine numbers. It's a showstopper, and even worse, it kind of looks like valid data if you're not looking closely.
+"555-868-902" is an example of **[invalid data](https://en.wikipedia.org/wiki/Fictitious_telephone_number)**... for a phone number. It's probably a valid account number for some internet service provider in Alaska, but there's no way to figure out what your friend's phone number is from those nine numbers. It's a showstopper, and even worse, it kind of looks like valid data if you're not looking closely.
+
 
 ## Validations Protect the Database
 
