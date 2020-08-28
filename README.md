@@ -25,11 +25,15 @@ What is a "validation"?
 
 In the context of Rails, validations are special method calls that go at the top of model class definitions and prevent them from being saved to the database if their data doesn't look right.
 
-In general, "validations" are any code that perform the job of protecting the database from invalid code.
+In general, "validations" are any code that perform the job of protecting the database from invalid data.
 
-## AR Validations Are Not Database Validations
+## AR Validations Are Not Database Constraints (Validations)
 
-Many relational databases such as SQLite have data validation features that check things like length and data type. In Rails, these validations are **not used**, because each database works a little differently, and handling everything in ActiveRecord itself guarantees that we'll always get the same features no matter what database we're using under the hood.
+Many relational databases, such as SQLite and Postgres, have data validation features that check things like length and data type. These validations are typically added via migrations, and depending on the specific validation, they may or may not be reflected in the schema.rb file.
+
+Database constraints and model validations are also functionally different. Database constrainsts will ALWAYS be checked when adding or updating data in the database, while AR validations will only be checked when adding or updating data through Ruby/Rails (e.g. if we use SQL code in the command line to modify the database, AR validations are not run).
+
+Some developers use database constraints and AR validations, while others rely on AR validations alone. Ultimately, it depends on how the developer plans to add and update data in the database. In this lesson, we'll be focusing on AR validations.
 
 ## What is "invalid data"?
 
