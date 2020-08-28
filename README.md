@@ -31,7 +31,7 @@ In general, "validations" are any code that perform the job of protecting the da
 
 Many relational databases, such as SQLite and Postgres, have data validation features that check things like length and data type. These validations are typically added via migrations, and depending on the specific validation, they may or may not be reflected in the schema.rb file.
 
-Database constraints and model validations are also functionally different. Database constrainsts will ALWAYS be checked when adding or updating data in the database, while AR validations will only be checked when adding or updating data through Ruby/Rails (e.g. if we use SQL code in the command line to modify the database, AR validations are not run).
+Database constraints and model validations are also functionally different. Database constraints will ALWAYS be checked when adding or updating data in the database, while AR validations will only be checked when adding or updating data through Ruby/Rails (e.g. if we use SQL code in the command line to modify the database, AR validations are not run).
 
 Some developers use database constraints and AR validations, while others rely on AR validations alone. Ultimately, it depends on how the developer plans to add and update data in the database. In this lesson, we'll be focusing on AR validations.
 
