@@ -6,7 +6,7 @@ We can use `ActiveRecord::Base` helper methods like `#validates` to set
 things up.
 
 
-# Objectives
+## Objectives
 
 After this lesson, you should be able to:
 
@@ -19,7 +19,7 @@ After this lesson, you should be able to:
 - Add a custom validation error to an AR model
 
 
-# Context: Databases and Data Validity
+## Context: Databases and Data Validity
 
 What is a "validation"?
 
@@ -27,7 +27,7 @@ In the context of Rails, validations are special method calls that go at the top
 
 In general, "validations" are any code that perform the job of protecting the database from invalid data.
 
-## AR Validations Are Not Database Constraints (Validations)
+### AR Validations Are Not Database Constraints (Validations)
 
 Many relational databases, such as SQLite and PostgreSQL, have data validation features that check things like length and data type. These validations are typically added via migrations, and depending on the specific validation, they may or may not be reflected in the schema.rb file.
 
@@ -35,13 +35,13 @@ Database constraints and model validations are also functionally different. Data
 
 Some developers use database constraints and AR validations, while others rely on AR validations alone. Ultimately, it depends on how the developer plans to add and update data in the database. In this lesson, we'll be focusing on AR validations.
 
-## What is "invalid data"?
+### What is "invalid data"?
 
 Suppose you get a new phone and you ask all of your friends for their phone number again. One of them tells you, "555-868-902". If you're paying attention, you'll probably wrinkle your nose and think, "Wait a minute. That doesn't sound like a real phone number."
 
 "555-868-902" is an example of **invalid data**... for a phone number. It's probably a valid account number for some internet service provider in Alaska, but there's no way to figure out what your friend's phone number is from those nine numbers. It's a showstopper, and even worse, it kind of looks like valid data if you're not looking closely.
 
-## Validations Protect the Database
+### Validations Protect the Database
 
 Invalid data is the bogeyman of web applications: it hides in your database until the worst possible moment, then jumps out and ruins everything by causing confusing errors.
 
@@ -52,7 +52,7 @@ It would be much easier if you never have bad data in the first place, so you ca
 That's where validations come in.
 
 
-# Basic Usage
+## Basic Usage
 
 For more examples of basic validation usage, see the Rails Guide for [Active Record Validations][ar_validations]. Take a few minutes to browse the helpers listed in Section 2.
 
@@ -71,7 +71,7 @@ Person.create(name: nil).valid? # => false
 
 In this example, the options hash is `{ presence: true }`, which implements the most basic form of validation, preventing the object from being saved if its `name` attribute is empty.
 
-# Lifecycle Timing
+## Lifecycle Timing
 
 Before proceeding, keep the answer to this question in mind:
 
@@ -87,11 +87,11 @@ For a full list of methods that trigger validation, see [Section 4][ar_callbacks
 
 [ar_callbacks_4]: http://guides.rubyonrails.org/active_record_callbacks.html#running-callbacks
 
-# Validation Failure
+## Validation Failure
 
 Here it is, the moment of truth. What can we do when a record fails validation?
 
-## How can you tell when a record fails validation?
+### How can you tell when a record fails validation?
 
 **Pay attention to return values!**
 
@@ -112,7 +112,7 @@ person.save #=> false
 person.save! #=> EXCEPTION
 ```
 
-## Finding out why validations failed
+### Finding out why validations failed
 
 To find out what went wrong, you can look at the model's `#errors` object.
 
@@ -133,7 +133,7 @@ person.errors[:name]
 ```
 
 
-# Displaying Validation Errors in Views
+## Displaying Validation Errors in Views
 
 See [Section 8][ar_validations_8] of the Rails Guide for an example of how to use the `ActiveModel::Errors#full_messages` helper, reproduced here for convenience:
 
@@ -159,11 +159,11 @@ See [Section 8][ar_validations_8] of the Rails Guide for an example of how to us
 This constructs more complete-looking sentences from the more terse messages available in `errors.messages`.
 
 
-# Other Built-in Validators
+## Other Built-in Validators
 
 Rails has a host of built-in helpers.
 
-## Length
+### Length
 
 `length` is one of the most versatile:
 
@@ -193,7 +193,7 @@ end
 
 Phew!
 
-## Uniqueness
+### Uniqueness
 
 Another common built-in validator is `uniqueness`:
 
@@ -205,7 +205,7 @@ end
 
 This will prevent any account from being created with the same email as another already-existing account.
 
-## Custom Messages
+### Custom Messages
 
 This isn't a validator in its own right, but a handy convenience option for specifying your own error messages:
 
@@ -215,8 +215,7 @@ class Person < ActiveRecord::Base
 end
 ```
 
-
-# Custom Validators
+### Custom Validators
 
 There are three ways to implement custom validators, with examples in [Section
 6][ar_validators_6] of the Rails Guide.
