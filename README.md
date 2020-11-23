@@ -39,7 +39,8 @@ Some developers use database constraints and AR validations, while others rely o
 
 Suppose you get a new phone and you ask all of your friends for their phone number again. One of them tells you, "555-868-902". If you're paying attention, you'll probably wrinkle your nose and think, "Wait a minute. That doesn't sound like a real phone number."
 
-"555-868-902" is an example of **invalid data**... for a phone number. It's probably a valid account number for some internet service provider in Alaska, but there's no way to figure out what your friend's phone number is from those nine numbers. It's a showstopper, and even worse, it kind of looks like valid data if you're not looking closely.
+"555-868-902" is an example of **[invalid data](https://en.wikipedia.org/wiki/Fictitious_telephone_number)**... for a phone number. It's probably a valid account number for some internet service provider in Alaska, but there's no way to figure out what your friend's phone number is from those nine numbers. It's a showstopper, and even worse, it kind of looks like valid data if you're not looking closely.
+
 
 ### Validations Protect the Database
 
