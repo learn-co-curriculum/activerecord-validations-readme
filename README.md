@@ -5,7 +5,6 @@ ActiveRecord can validate our models for us before they even touch the database.
 We can use `ActiveRecord::Base` helper methods like `#validates` to set
 things up.
 
-
 ## Objectives
 
 After this lesson, you should be able to:
