@@ -1,0 +1,6 @@
+---
+:lessons:
+- :id: activerecord-validations
+  :course_id: 3300
+  :canvas_url: https://learning.flatironschool.com/courses/3300/pages/activerecord-validations
+  :type: page
